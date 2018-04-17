@@ -1,6 +1,6 @@
 ﻿namespace Connect4
 {
-    partial class Form1
+    partial class Connect4
     {
         /// <summary>
         /// Required designer variable.
@@ -243,6 +243,7 @@
             this.GameDataGridView.Name = "GameDataGridView";
             this.GameDataGridView.Size = new System.Drawing.Size(841, 612);
             this.GameDataGridView.TabIndex = 0;
+            this.GameDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GameDataGridView_CellContentClick);
             // 
             // Form1
             // 
