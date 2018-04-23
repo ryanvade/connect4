@@ -25,7 +25,7 @@ namespace Connect4
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            ProcessStartInfo sInfo = new ProcessStartInfo("https://github.com/ryanvade/");
+            ProcessStartInfo sInfo = new ProcessStartInfo("https://github.com/ryanvade/connect4");
             Process.Start(sInfo);
         }
     }
