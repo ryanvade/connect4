@@ -1,5 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Connect4
@@ -14,25 +21,29 @@ namespace Connect4
         private Bitmap blank, red, black;
         private PlayerState PlayerA;
         private PlayerState PlayerB;
+        private String PlayerAFilePath;
+        private String PlayerBFilePath;
         private GameState CurrentState;
         private PlayerColor CurrentPlayer;
+        private TimeLimit CurrentTimeLimit;
         private enum PlayerState { Human = 0x01, Computer = 0x02 }
-        private enum GameState { Running = 0x03, Stopped = 0x04}
-        private enum PlayerColor { Red = 0x05, Black = 0x06}
+        private enum GameState { Running = 0x03, Stopped = 0x04 }
+        private enum PlayerColor { Red = 0x05, Black = 0x06 }
+        private enum TimeLimit { Five = 5000, Ten = 10000, Twenty = 20000, OneMinute = 60000, No_Limit = -1}
 
         public Connect4()
         {
-            InitializeImages();
             InitializeComponent();
+            InitializeImages();
             InitializeNewGame();
             CurrentState = GameState.Stopped;
-            CurrentPlayer = PlayerColor.Red;
-            PlayerA = PlayerState.Human;
-            Player_A_Label.Visible = true;
-            Player_A_Label.Text = "Current: Human";
-            PlayerB = PlayerState.Human;
-            Player_B_Label.Visible = true;
-            Player_B_Label.Text = "Current: Human";
+            RED_CURRENT_STATE_LABEL.Text = "Current: Human";
+            RED_CONSOLE_CHECKBOX.Visible = false;
+            BLACK_CURRENT_STATE_LABEL.Text = "Current: Human";
+            BLACK_CONSOLE_CHECKBOX.Visible = false;
+            toolStripComboBox1.SelectedIndex = 0;
+            CurrentTimeLimit = TimeLimit.Five;
+            toolStripComboBox2.SelectedIndex = 0;
         }
 
         private void InitializeImages()
@@ -47,21 +58,39 @@ namespace Connect4
         private void InitializeNewGame()
         {
             markedCells = 0;
-            this.AutoSize = true;
-            splitContainer1.SuspendLayout();
-            SuspendLayout();
-            GameDataGridView.AllowUserToAddRows = false;
-            GameDataGridView.CellClick += new DataGridViewCellEventHandler(game_cell_click);
-            GameDataGridView.CellMouseEnter += new DataGridViewCellEventHandler(game_cell_mouse_enter);
-            GameDataGridView.CellMouseLeave += new DataGridViewCellEventHandler(game_cell_mouse_leave);
+            AutoSize = true;
+            CURRENT_TURN_PICTURE_BOX.Image = blank;
+            CurrentPlayer = PlayerColor.Red;
+            PlayerA = PlayerState.Human;
+            PlayerB = PlayerState.Human;
+            InitializeDataGridView();
+        }
 
-            GameDataGridView.ColumnHeadersVisible = false;
-            GameDataGridView.RowHeadersVisible = false;
-            GameDataGridView.AllowUserToResizeColumns = false;
-            GameDataGridView.AllowUserToResizeRows = false;
-            GameDataGridView.RowTemplate.Height = imageHeight;
-            GameDataGridView.AutoSize = true;
+        private void InitializeDataGridView()
+        {
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.SuspendLayout();
+            GameGrid.Rows.Clear();
+            GameGrid.AllowUserToAddRows = false;
+            GameGrid.ColumnHeadersVisible = false;
+            GameGrid.RowHeadersVisible = false;
+            GameGrid.AllowUserToResizeColumns = false;
+            GameGrid.AllowUserToResizeRows = false;
+            GameGrid.BorderStyle = BorderStyle.Fixed3D;
+            GameGrid.RowTemplate.Height = imageHeight;
+            GameGrid.AutoSize = true;
+            CreateColumns();
+            CreateRows();
+            //this.splitContainer1.Width = this.splitContainer1.Panel1.Width + (columnCount * imageWidth);
+            //this.Width = this.splitContainer1.Panel1.Width + (columnCount * imageWidth);
+            //this.Height = GameGrid.Height;
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.ResumeLayout(false);
+        }
 
+        private void CreateColumns()
+        {
+            Console.Out.WriteLine("Inside Create Columns");
             DataGridViewImageColumn imageColumn;
             for (int i = 0; i < columnCount; i++)
             {
@@ -69,167 +98,25 @@ namespace Connect4
                 imageColumn = new DataGridViewImageColumn();
                 imageColumn.Width = imageWidth;
                 imageColumn.Image = unMarked;
-                //imageColumn.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                GameDataGridView.Columns.Add(imageColumn);
+                GameGrid.Columns.Add(imageColumn);
             }
+        }
 
+        private void CreateRows()
+        {
+            Console.Out.WriteLine("Inside Create Rows");
             for (int i = 0; i < rowCount; i++)
             {
-                GameDataGridView.Rows.Add();
-            }
-
-            splitContainer1.ResumeLayout(false);
-            ResumeLayout(false);
-        }
-
-        private void switch_players()
-        {
-            if(CurrentPlayer == PlayerColor.Red)
-            {
-                if(PlayerA == PlayerState.Computer)
-                {
-                    // Handle Computer Player
-                }
-                CurrentPlayer = PlayerColor.Black;
-            }else
-            {
-                if(PlayerB == PlayerState.Computer)
-                {
-                    // Handle Computer Player
-                }
-                CurrentPlayer = PlayerColor.Red;
+                GameGrid.Rows.Add();
             }
         }
 
-        private void check_for_end_condition()
-        {
-            if(markedCells == rowCount * columnCount)
-            {
-                // Game is over, reset
-                GameDataGridView.Rows.Clear();
-                GameDataGridView.Columns.Clear();
-                InitializeNewGame();
-            }
-        }
-
-        private void game_cell_click(object sender, DataGridViewCellEventArgs e)
-        {
-            if(CurrentState == GameState.Stopped)
-            {
-                return;
-            }
-
-            if(CurrentPlayer == PlayerColor.Red && PlayerA == PlayerState.Computer)
-            {
-                return;
-            }
-
-            if(CurrentPlayer == PlayerColor.Black && PlayerB == PlayerState.Computer)
-            {
-                return;
-            }
-
-            DataGridViewImageCell cell = (DataGridViewImageCell)GameDataGridView.Rows[e.RowIndex].Cells[e.ColumnIndex];
-
-            if(cell.Value == blank)
-            {
-                if(CurrentPlayer == PlayerColor.Red)
-                {
-                    cell.Value = red;
-                }else
-                {
-                    cell.Value = black;
-                }
-                markedCells++;
-                switch_players();
-            }
-            check_for_end_condition();
-        }
-
-        private void game_cell_mouse_enter(object sender, DataGridViewCellEventArgs e)
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void game_cell_mouse_leave(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
-        private void initImages()
-        {
-
-        }
-
-        private void splitContainer2_Panel1_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            PlayerA = PlayerState.Human;
-            checkBox1.Enabled = false;
-            checkBox1.Checked = false;
-            Player_A_Label.Text = "Current: Human";
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            PlayerA = PlayerState.Computer;
-            checkBox1.Enabled = true;
-            Player_A_Label.Text = "Current: Computer";
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            PlayerB = PlayerState.Human;
-            checkBox2.Enabled = false;
-            checkBox2.Checked = false;
-            Player_B_Label.Text = "Current: Human";
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            PlayerB = PlayerState.Computer;
-            checkBox2.Enabled = true;
-            Player_B_Label.Text = "Current: Computer";
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            if(CurrentState == GameState.Running)
-            {
-                Start_Button.Text = "Start";
-                CurrentState = GameState.Stopped;
-            }else
-            {
-                Start_Button.Text = "Stop";
-                CurrentState = GameState.Running;
-            }
-        }
-
-        private void OverPanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
+        private void label4_Click(object sender, EventArgs e)
         {
 
         }
@@ -239,33 +126,204 @@ namespace Connect4
 
         }
 
-        private void button5_Click_1(object sender, EventArgs e)
+        private void SwitchPlayers()
+        {
+            if(CurrentPlayer == PlayerColor.Red)
+            {
+                CurrentPlayer = PlayerColor.Black;
+                CURRENT_TURN_PICTURE_BOX.Image = black;
+            }else
+            {
+                CurrentPlayer = PlayerColor.Red;
+                CURRENT_TURN_PICTURE_BOX.Image = red;
+            }
+        }
+
+        private void GameGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (CurrentState == GameState.Stopped)
+            {
+                return;
+            }
+
+            if (CurrentPlayer == PlayerColor.Red && PlayerA == PlayerState.Computer)
+            {
+                return;
+            }
+
+            if (CurrentPlayer == PlayerColor.Black && PlayerB == PlayerState.Computer)
+            {
+                return;
+            }
+
+            DataGridViewImageCell cell = (DataGridViewImageCell)GameGrid.Rows[e.RowIndex].Cells[e.ColumnIndex];
+
+            if (cell.Value == blank)
+            {
+                if (CurrentPlayer == PlayerColor.Red)
+                {
+                    cell.Value = red;
+                }
+                else
+                {
+                    cell.Value = black;
+                }
+                markedCells++;
+                SwitchPlayers();
+            }
+        }
+
+        private void ResetBoard(bool flipStartButton)
         {
             CurrentState = GameState.Stopped;
-            Start_Button.Text = "Start";
-            GameDataGridView.Rows.Clear();
-            GameDataGridView.Columns.Clear();
+            GameGrid.Rows.Clear();
+            GameGrid.Columns.Clear();
+            if(flipStartButton)
+            {
+                START_BUTTON.Text = "Start";
+
+            }
+            RED_CURRENT_STATE_LABEL.Text = "Current: Human";
+            RED_CONSOLE_CHECKBOX.Visible = false;
+            BLACK_CURRENT_STATE_LABEL.Text = "Current: Human";
+            BLACK_CONSOLE_CHECKBOX.Visible = false;
+            toolStripComboBox1.Enabled = true;
+            toolStripComboBox2.Enabled = true;
             InitializeNewGame();
         }
 
-        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
+        private void START_BUTTON_Click(object sender, EventArgs e)
         {
-
+            if(CurrentState == GameState.Stopped)
+            {
+                CurrentState = GameState.Running;
+                CURRENT_TURN_PICTURE_BOX.Image = red;
+                START_BUTTON.Text = "Stop";
+                if(markedCells > 0)
+                {
+                    ResetBoard(false);
+                }
+                toolStripComboBox1.Enabled = false;
+                toolStripComboBox2.Enabled = false;
+            }
+            else
+            {
+                CurrentState = GameState.Stopped;
+                CURRENT_TURN_PICTURE_BOX.Image = blank;
+                START_BUTTON.Text = "Start";
+                toolStripComboBox1.Enabled = true;
+                toolStripComboBox2.Enabled = true;
+            }
         }
 
-        private void label3_Click(object sender, EventArgs e)
+        private void RESET_BUTTON_Click(object sender, EventArgs e)
         {
-
+            ResetBoard(true);
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void RED_HUMAN_BUTTON_Click(object sender, EventArgs e)
         {
-
+            PlayerA = PlayerState.Human;
+            RED_CONSOLE_CHECKBOX.Visible = false;
+            RED_CURRENT_STATE_LABEL.Text = "Current: Human";
+            PlayerAFilePath = "";
         }
 
-        private void GameDataGridView_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if(toolStripComboBox1.SelectedIndex == 0)
+            {
+                rowCount = 5;
+                columnCount = 5;
+                ResetBoard(true);
+            }else if(toolStripComboBox1.SelectedIndex == 1)
+            {
+                rowCount = 11;
+                columnCount = 11;
+                ResetBoard(true);
+            }else
+            {
+                rowCount = 13;
+                columnCount = 13;
+                ResetBoard(true);
+            }
+        }
 
+        private void RED_COMPUTER_BUTTON_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "executable files (*.exe)|*.exe";
+
+            if (dialog.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.FileName))
+            {
+                PlayerAFilePath = dialog.FileName;
+                PlayerA = PlayerState.Computer;
+                RED_CURRENT_STATE_LABEL.Text = "Current: " + Path.GetFileName(dialog.FileName);
+                RED_CONSOLE_CHECKBOX.Visible = true;
+            }
+        }
+
+        private void BLACK_COMPUTER_BUTTON_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "executable files (*.exe)|*.exe";
+
+            if (dialog.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(dialog.FileName))
+            {
+                PlayerBFilePath = dialog.FileName;
+                PlayerB = PlayerState.Computer;
+                BLACK_CURRENT_STATE_LABEL.Text = "Current: " + Path.GetFileName(dialog.FileName);
+                BLACK_CONSOLE_CHECKBOX.Visible = true;
+            }
+        }
+
+        private void BLACK_HUMAN_BUTTON_Click(object sender, EventArgs e)
+        {
+            PlayerB = PlayerState.Human;
+            BLACK_CONSOLE_CHECKBOX.Visible = false;
+            BLACK_CURRENT_STATE_LABEL.Text = "Current: Human";
+            PlayerBFilePath = "";
+        }
+
+        private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = toolStripComboBox2.SelectedIndex;
+            switch (index)
+            {
+                case 0:
+                    CurrentTimeLimit = TimeLimit.Five;
+                    break;
+                case 1:
+                    CurrentTimeLimit = TimeLimit.Ten;
+                    break;
+                case 2:
+                    CurrentTimeLimit = TimeLimit.Twenty;
+                    break;
+                case 3:
+                    CurrentTimeLimit = TimeLimit.OneMinute;
+                    break;
+                case 4:
+                    CurrentTimeLimit = TimeLimit.No_Limit;
+                    break;
+                default:
+                    CurrentTimeLimit = TimeLimit.Five;
+                    toolStripComboBox2.SelectedIndex = 0;
+                    break;
+            }
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            About about = new About();
+            //about.Parent = this;
+            about.StartPosition = FormStartPosition.CenterParent;
+            about.ShowDialog();
+            about.Dispose();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }
