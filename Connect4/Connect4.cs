@@ -382,170 +382,97 @@ namespace Connect4
 
         private void CheckForEnding()
         {
-            if(markedCells < rowCount)
+            if(markedCells < 5)
             {
                 return;
             }
+            GridChecker checker = new GridChecker(GameGrid, red, black, blank);
 
-            if(markedCells >= rowCount * columnCount)
-            {
-                DisplayNoWinner();
-                return;
-            }
-
-            // Check Rows
-            if(CheckRows())
+            if(checker.CheckRows())
             {
                 Console.Out.WriteLine("Winner By Rows");
+                char winner = checker.getWinner();
+                switch (winner)
+                {
+                    case 'R':
+                        DisplayWinner(PlayerColor.Red);
+                        ResetBoard(true);
+                        return;
+                    case 'B':
+                        DisplayWinner(PlayerColor.Black);
+                        ResetBoard(true);
+                        return;
+                    default:
+                        break;
+                }
                 return;
             }
-            // Check Columns
-            if(CheckColumns())
+
+            if (checker.CheckColumns())
             {
                 Console.Out.WriteLine("Winner By Columns");
+                char winner = checker.getWinner();
+                switch (winner)
+                {
+                    case 'R':
+                        DisplayWinner(PlayerColor.Red);
+                        ResetBoard(true);
+                        return;
+                    case 'B':
+                        DisplayWinner(PlayerColor.Black);
+                        ResetBoard(true);
+                        return;
+                    default:
+                        break;
+                }
                 return;
             }
-            // Check lower diagonal
-            if(CheckLowerDiagonal())
+
+            if (checker.CheckUpperDiagonals())
             {
-                Console.Out.WriteLine("Winner By Diagonal");
-              return;
-            }
-            // Check upper diagonal
-            if(CheckUpperDiagonal())
-            {
-                Console.Out.WriteLine("Winner By Other Diagonal");
+                Console.Out.WriteLine("Winner By Upper Diagonals");
+                char winner = checker.getWinner();
+                switch (winner)
+                {
+                    case 'R':
+                        DisplayWinner(PlayerColor.Red);
+                        ResetBoard(true);
+                        return;
+                    case 'B':
+                        DisplayWinner(PlayerColor.Black);
+                        ResetBoard(true);
+                        return;
+                    default:
+                        break;
+                }
                 return;
             }
-        }
 
-        private bool CheckRows()
-        {
-            bool winner = false;
-            foreach(DataGridViewRow row in GameGrid.Rows)
+            if (checker.CheckLowerDiagonals())
             {
-                if (row.IsNewRow) break;
-                if (winner) break;
-                bool different = false;
-                Bitmap first = (Bitmap)row.Cells[0].Value;
-                if(first != blank)
+                Console.Out.WriteLine("Winner By Lower Diagonals");
+                char winner = checker.getWinner();
+                switch (winner)
                 {
-                    for (int i = 1; i < columnCount; i++)
-                    {
-                        if ((Bitmap)row.Cells[i].Value != first)
-                        {
-                            different = true;
-                            break;
-                        }
-                    }
-                    if (!different)
-                    {
-                        winner = true;
-                        if (first == red)
-                        {
-                            DisplayWinner(PlayerColor.Red);
-                        }
-                        else
-                        {
-                            DisplayWinner(PlayerColor.Black);
-                        }
-                    }
+                    case 'R':
+                        DisplayWinner(PlayerColor.Red);
+                        ResetBoard(true);
+                        return;
+                    case 'B':
+                        DisplayWinner(PlayerColor.Black);
+                        ResetBoard(true);
+                        return;
+                    default:
+                        break;
                 }
-            }
-            return winner;
-        }
-
-        private bool CheckColumns()
-        {
-            bool winner = false;
-            Bitmap cell;
-            foreach (DataGridViewColumn column in GameGrid.Columns)
-            {
-                if (winner) break;
-                bool different = false;
-                cell = (Bitmap)GameGrid.Rows[0].Cells[column.Index].Value;
-                if(cell != blank)
-                {
-                    for (int j = 1; j < rowCount; j++)
-                    {
-                        if (cell != GameGrid.Rows[j].Cells[column.Index].Value)
-                        {
-                            different = true;
-                            break;
-                        }
-                    }
-                    if (!different)
-                    {
-                        winner = true;
-                        if (cell == red)
-                        {
-                            DisplayWinner(PlayerColor.Red);
-                        }
-                        else
-                        {
-                            DisplayWinner(PlayerColor.Black);
-                        }
-                        return true;
-                    }
-                }
-            }
-            return winner;
-
-        }
-
-        private bool CheckLowerDiagonal()
-        {
-            Bitmap first = (Bitmap)GameGrid.Rows[0].Cells[0].Value;
-            if(first == blank)
-            {
-                return false;
+                return;
             }
 
-            int j = 1;
-            for (int i = 1; i < rowCount; i++)
+            if(markedCells == rowCount * columnCount)
             {
-                if(GameGrid.Rows[i].Cells[j].Value != first)
-                {
-                    return false;
-                }
-                j++;
+                DisplayNoWinner();
+                ResetBoard(true);
             }
-            if(first == red)
-            {
-                DisplayWinner(PlayerColor.Red);
-            }else
-            {
-                DisplayWinner(PlayerColor.Black);
-            }
-            return true;
-        }
-
-        private bool CheckUpperDiagonal()
-        {
-            Bitmap first = (Bitmap)GameGrid.Rows[rowCount - 1].Cells[0].Value;
-            if(first == blank)
-            {
-                return false;
-            }
-
-            int j = 1;
-            for (int i = rowCount - 2; i >= 0; i--)
-            {
-                    if(GameGrid.Rows[i].Cells[j].Value != first)
-                    {
-                        return false;
-                    }
-                j++;
-            }
-            if (first == red)
-            {
-                DisplayWinner(PlayerColor.Red);
-            }
-            else
-            {
-                DisplayWinner(PlayerColor.Black);
-            }
-            return true;
 
         }
 
@@ -710,10 +637,20 @@ namespace Connect4
                 rowCount = 11;
                 columnCount = 11;
                 ResetBoard(true);
-            }else
+            }else if(toolStripComboBox1.SelectedIndex == 2)
             {
                 rowCount = 13;
                 columnCount = 13;
+                ResetBoard(true);
+            } else if(toolStripComboBox1.SelectedIndex == 3)
+            {
+                rowCount = 15;
+                columnCount = 15;
+                ResetBoard(true);
+            }else
+            {
+                rowCount = 17;
+                columnCount = 17;
                 ResetBoard(true);
             }
         }
