@@ -425,135 +425,52 @@ namespace Connect4
                 }
                 return;
             }
-        }
 
-        private bool CheckRows()
-        {
-            bool winner = false;
-            foreach(DataGridViewRow row in GameGrid.Rows)
+            if (checker.CheckUpperDiagonals())
             {
-                if (row.IsNewRow) break;
-                if (winner) break;
-                bool different = false;
-                Bitmap first = (Bitmap)row.Cells[0].Value;
-                if(first != blank)
+                Console.Out.WriteLine("Winner By Upper Diagonals");
+                char winner = checker.getWinner();
+                switch (winner)
                 {
-                    for (int i = 1; i < columnCount; i++)
-                    {
-                        if ((Bitmap)row.Cells[i].Value != first)
-                        {
-                            different = true;
-                            break;
-                        }
-                    }
-                    if (!different)
-                    {
-                        winner = true;
-                        if (first == red)
-                        {
-                            DisplayWinner(PlayerColor.Red);
-                        }
-                        else
-                        {
-                            DisplayWinner(PlayerColor.Black);
-                        }
-                    }
+                    case 'R':
+                        DisplayWinner(PlayerColor.Red);
+                        ResetBoard(true);
+                        return;
+                    case 'B':
+                        DisplayWinner(PlayerColor.Black);
+                        ResetBoard(true);
+                        return;
+                    default:
+                        break;
                 }
+                return;
             }
-            return winner;
-        }
 
-        private bool CheckColumns()
-        {
-            bool winner = false;
-            Bitmap cell;
-            foreach (DataGridViewColumn column in GameGrid.Columns)
+            if (checker.CheckLowerDiagonals())
             {
-                if (winner) break;
-                bool different = false;
-                cell = (Bitmap)GameGrid.Rows[0].Cells[column.Index].Value;
-                if(cell != blank)
+                Console.Out.WriteLine("Winner By Lower Diagonals");
+                char winner = checker.getWinner();
+                switch (winner)
                 {
-                    for (int j = 1; j < rowCount; j++)
-                    {
-                        if (cell != GameGrid.Rows[j].Cells[column.Index].Value)
-                        {
-                            different = true;
-                            break;
-                        }
-                    }
-                    if (!different)
-                    {
-                        winner = true;
-                        if (cell == red)
-                        {
-                            DisplayWinner(PlayerColor.Red);
-                        }
-                        else
-                        {
-                            DisplayWinner(PlayerColor.Black);
-                        }
-                        return true;
-                    }
+                    case 'R':
+                        DisplayWinner(PlayerColor.Red);
+                        ResetBoard(true);
+                        return;
+                    case 'B':
+                        DisplayWinner(PlayerColor.Black);
+                        ResetBoard(true);
+                        return;
+                    default:
+                        break;
                 }
-            }
-            return winner;
-
-        }
-
-        private bool CheckLowerDiagonal()
-        {
-            Bitmap first = (Bitmap)GameGrid.Rows[0].Cells[0].Value;
-            if(first == blank)
-            {
-                return false;
+                return;
             }
 
-            int j = 1;
-            for (int i = 1; i < rowCount; i++)
+            if(markedCells == rowCount * columnCount)
             {
-                if(GameGrid.Rows[i].Cells[j].Value != first)
-                {
-                    return false;
-                }
-                j++;
+                DisplayNoWinner();
+                ResetBoard(true);
             }
-            if(first == red)
-            {
-                DisplayWinner(PlayerColor.Red);
-            }else
-            {
-                DisplayWinner(PlayerColor.Black);
-            }
-            return true;
-        }
-
-        private bool CheckUpperDiagonal()
-        {
-            Bitmap first = (Bitmap)GameGrid.Rows[rowCount - 1].Cells[0].Value;
-            if(first == blank)
-            {
-                return false;
-            }
-
-            int j = 1;
-            for (int i = rowCount - 2; i >= 0; i--)
-            {
-                    if(GameGrid.Rows[i].Cells[j].Value != first)
-                    {
-                        return false;
-                    }
-                j++;
-            }
-            if (first == red)
-            {
-                DisplayWinner(PlayerColor.Red);
-            }
-            else
-            {
-                DisplayWinner(PlayerColor.Black);
-            }
-            return true;
 
         }
 

@@ -125,5 +125,81 @@ namespace Connect4
 
             return false;
         }
+
+        public bool CheckUpperDiagonals()
+        {
+            for (int i = columnCount - 1; i >= 0; i--)
+            {
+                int j = 0;
+                while (j < rowCount)
+                {
+                    char current = grid[j][i];
+                    if (current != '0')
+                    {
+                        int currentColumn = i - 1;
+                        int currentRow = j + 1;
+                        int concurrent = 1;
+                        while (currentRow < rowCount && currentColumn < columnCount && currentRow >= 0 && currentColumn >= 0)
+                        {
+                            if (grid[currentRow][currentColumn] == current)
+                            {
+                                concurrent++;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                            currentRow++;
+                            currentColumn--;
+                        }
+                        if (concurrent >= 5)
+                        {
+                            winner = current;
+                            return true;
+                        }
+                    }
+                    j++;
+                }
+            }
+            return false;
+        }
+
+        public bool CheckLowerDiagonals()
+        {
+            for (int i = columnCount - 1; i >= 0; i--)
+            {
+                int j = rowCount - 1;
+                while (j >= 4)
+                {
+                    char current = grid[j][i];
+                    if (current != '0')
+                    {
+                        int currentColumn = j - 1;
+                        int currentRow = i - 1;
+                        int concurrent = 1;
+                        while (currentRow < rowCount && currentColumn < columnCount && currentRow >= 0 && currentColumn >= 0)
+                        {
+                            if (grid[currentRow][currentColumn] == current)
+                            {
+                                concurrent++;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                            currentRow--;
+                            currentColumn--;
+                        }
+                        if (concurrent >= 5)
+                        {
+                            winner = current;
+                            return true;
+                        }
+                    }
+                    j--;
+                }
+            }
+            return false;
+        }
     }
 }
