@@ -380,39 +380,49 @@ namespace Connect4
 
         private void CheckForEnding()
         {
-            if(markedCells < rowCount)
+            if(markedCells < 5)
             {
                 return;
             }
+            GridChecker checker = new GridChecker(GameGrid, red, black, blank);
 
-            if(markedCells >= rowCount * columnCount)
-            {
-                DisplayNoWinner();
-                return;
-            }
-
-            // Check Rows
-            if(CheckRows())
+            if(checker.CheckRows())
             {
                 Console.Out.WriteLine("Winner By Rows");
+                char winner = checker.getWinner();
+                switch (winner)
+                {
+                    case 'R':
+                        DisplayWinner(PlayerColor.Red);
+                        ResetBoard(true);
+                        return;
+                    case 'B':
+                        DisplayWinner(PlayerColor.Black);
+                        ResetBoard(true);
+                        return;
+                    default:
+                        break;
+                }
                 return;
             }
-            // Check Columns
-            if(CheckColumns())
+
+            if (checker.CheckColumns())
             {
                 Console.Out.WriteLine("Winner By Columns");
-                return;
-            }
-            // Check lower diagonal
-            if(CheckLowerDiagonal())
-            {
-                Console.Out.WriteLine("Winner By Diagonal");
-              return;
-            }
-            // Check upper diagonal
-            if(CheckUpperDiagonal())
-            {
-                Console.Out.WriteLine("Winner By Other Diagonal");
+                char winner = checker.getWinner();
+                switch (winner)
+                {
+                    case 'R':
+                        DisplayWinner(PlayerColor.Red);
+                        ResetBoard(true);
+                        return;
+                    case 'B':
+                        DisplayWinner(PlayerColor.Black);
+                        ResetBoard(true);
+                        return;
+                    default:
+                        break;
+                }
                 return;
             }
         }
