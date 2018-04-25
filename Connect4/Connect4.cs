@@ -41,6 +41,8 @@ namespace Connect4
             InitializeComponent();
             InitializeImages();
             InitializeNewGame();
+            PlayerA = PlayerState.Human;
+            PlayerB = PlayerState.Human;
             CurrentState = GameState.Stopped;
             RED_CURRENT_STATE_LABEL.Text = "Current: Human";
             RED_CONSOLE_CHECKBOX.Visible = false;
@@ -66,8 +68,6 @@ namespace Connect4
             AutoSize = true;
             CURRENT_TURN_PICTURE_BOX.Image = blank;
             CurrentPlayer = PlayerColor.Red;
-            PlayerA = PlayerState.Human;
-            PlayerB = PlayerState.Human;
             InitializeDataGridView();
         }
 
@@ -200,10 +200,6 @@ namespace Connect4
                 START_BUTTON.Text = "Start";
 
             }
-            RED_CURRENT_STATE_LABEL.Text = "Current: Human";
-            RED_CONSOLE_CHECKBOX.Visible = false;
-            BLACK_CURRENT_STATE_LABEL.Text = "Current: Human";
-            BLACK_CONSOLE_CHECKBOX.Visible = false;
             toolStripComboBox1.Enabled = true;
             toolStripComboBox2.Enabled = true;
             redCells = 0;
@@ -240,6 +236,11 @@ namespace Connect4
 
         private void HandlePlayerTurn()
         {
+            if(CurrentState == GameState.Stopped)
+            {
+                return;
+            }
+
             WriteBoardToFile();
             if(CurrentPlayer == PlayerColor.Red && PlayerA == PlayerState.Human)
             {
@@ -338,7 +339,6 @@ namespace Connect4
                 }else
                 {
                     DisplayInvalidMove();
-                    ResetBoard(true);
                 }
             }
             catch (Exception e)
@@ -394,11 +394,16 @@ namespace Connect4
                 {
                     case 'R':
                         DisplayWinner(PlayerColor.Red);
-                        ResetBoard(true);
+                        //ResetBoard(true);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
                         return;
                     case 'B':
                         DisplayWinner(PlayerColor.Black);
-                        ResetBoard(true);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
                         return;
                     default:
                         break;
@@ -414,11 +419,17 @@ namespace Connect4
                 {
                     case 'R':
                         DisplayWinner(PlayerColor.Red);
-                        ResetBoard(true);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
                         return;
                     case 'B':
                         DisplayWinner(PlayerColor.Black);
-                        ResetBoard(true);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
                         return;
                     default:
                         break;
@@ -434,11 +445,17 @@ namespace Connect4
                 {
                     case 'R':
                         DisplayWinner(PlayerColor.Red);
-                        ResetBoard(true);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
                         return;
                     case 'B':
                         DisplayWinner(PlayerColor.Black);
-                        ResetBoard(true);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
                         return;
                     default:
                         break;
@@ -454,11 +471,17 @@ namespace Connect4
                 {
                     case 'R':
                         DisplayWinner(PlayerColor.Red);
-                        ResetBoard(true);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
                         return;
                     case 'B':
                         DisplayWinner(PlayerColor.Black);
-                        ResetBoard(true);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
                         return;
                     default:
                         break;
@@ -469,7 +492,10 @@ namespace Connect4
             if(markedCells == rowCount * columnCount)
             {
                 DisplayNoWinner();
-                ResetBoard(true);
+                START_BUTTON.Text = "Start";
+                CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                //ResetBoard(true);
             }
 
         }
@@ -549,7 +575,11 @@ namespace Connect4
             status.StartPosition = FormStartPosition.CenterParent;
             status.ShowDialog();
             status.Dispose();
-            ResetBoard(true);
+            CurrentState = GameState.Stopped;
+            START_BUTTON.Text = "Start";
+            CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+            //ResetBoard(true);
         }
 
         private void DisplayNoWinner()
@@ -558,7 +588,11 @@ namespace Connect4
             status.StartPosition = FormStartPosition.CenterParent;
             status.ShowDialog();
             status.Dispose();
-            ResetBoard(true);
+            CurrentState = GameState.Stopped;
+            START_BUTTON.Text = "Start";
+            CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+            //ResetBoard(true);
         }
 
         private void DisplayInvalidMove()
@@ -567,7 +601,11 @@ namespace Connect4
             status.StartPosition = FormStartPosition.CenterParent;
             status.ShowDialog();
             status.Dispose();
-            ResetBoard(true);
+            CurrentState = GameState.Stopped;
+            START_BUTTON.Text = "Start";
+            CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+            //ResetBoard(true);
         }
 
         private void DisplayOutOfTimeMessage()
@@ -576,7 +614,11 @@ namespace Connect4
             status.StartPosition = FormStartPosition.CenterParent;
             status.ShowDialog();
             status.Dispose();
-            ResetBoard(true);
+            CurrentState = GameState.Stopped;
+            START_BUTTON.Text = "Start";
+            CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+            //ResetBoard(true);
         }
 
         private void DisplayBadExecutable()
@@ -585,7 +627,11 @@ namespace Connect4
             status.StartPosition = FormStartPosition.CenterParent;
             status.ShowDialog();
             status.Dispose();
-            ResetBoard(true);
+            CurrentState = GameState.Stopped;
+            START_BUTTON.Text = "Start";
+            CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+            //ResetBoard(true);
         }
 
         private void DisplayWinner(PlayerColor player)
@@ -602,7 +648,11 @@ namespace Connect4
             status.StartPosition = FormStartPosition.CenterParent;
             status.ShowDialog();
             status.Dispose();
-            ResetBoard(true);
+            CurrentState = GameState.Stopped;
+            START_BUTTON.Text = "Start";
+            CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+            //ResetBoard(true);
         }
 
         private void RESET_BUTTON_Click(object sender, EventArgs e)
