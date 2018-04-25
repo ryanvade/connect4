@@ -33,9 +33,6 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripComboBox2 = new System.Windows.Forms.ToolStripComboBox();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -61,6 +58,18 @@
             this.label3 = new System.Windows.Forms.Label();
             this.GameGrid = new System.Windows.Forms.DataGridView();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.timeLimitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.secondsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.secondsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.secondsToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.minuteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noLimitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.boardSizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.x5ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.x11ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.x13ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.x15ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.x17ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -79,7 +88,8 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.optionsToolStripMenuItem,
+            this.timeLimitToolStripMenuItem,
+            this.boardSizeToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -110,41 +120,6 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // optionsToolStripMenuItem
-            // 
-            this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripComboBox1,
-            this.toolStripComboBox2});
-            this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
-            this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.optionsToolStripMenuItem.Text = "Options";
-            // 
-            // toolStripComboBox1
-            // 
-            this.toolStripComboBox1.Items.AddRange(new object[] {
-            "5x5",
-            "11x11",
-            "13x13",
-            "15x15",
-            "17x17"});
-            this.toolStripComboBox1.Name = "toolStripComboBox1";
-            this.toolStripComboBox1.Size = new System.Drawing.Size(121, 23);
-            this.toolStripComboBox1.Text = "Board Size";
-            this.toolStripComboBox1.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox1_SelectedIndexChanged);
-            // 
-            // toolStripComboBox2
-            // 
-            this.toolStripComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.toolStripComboBox2.Items.AddRange(new object[] {
-            "5 Seconds",
-            "10 Seconds",
-            "20 Seconds",
-            "1 Minute",
-            "No Limit"});
-            this.toolStripComboBox2.Name = "toolStripComboBox2";
-            this.toolStripComboBox2.Size = new System.Drawing.Size(121, 23);
-            this.toolStripComboBox2.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBox2_SelectedIndexChanged);
             // 
             // aboutToolStripMenuItem
             // 
@@ -437,6 +412,100 @@
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
+            // timeLimitToolStripMenuItem
+            // 
+            this.timeLimitToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.secondsToolStripMenuItem,
+            this.secondsToolStripMenuItem1,
+            this.secondsToolStripMenuItem2,
+            this.minuteToolStripMenuItem,
+            this.noLimitToolStripMenuItem});
+            this.timeLimitToolStripMenuItem.Name = "timeLimitToolStripMenuItem";
+            this.timeLimitToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
+            this.timeLimitToolStripMenuItem.Text = "Time Limit";
+            // 
+            // secondsToolStripMenuItem
+            // 
+            this.secondsToolStripMenuItem.Name = "secondsToolStripMenuItem";
+            this.secondsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.secondsToolStripMenuItem.Text = "5 Seconds";
+            this.secondsToolStripMenuItem.Click += new System.EventHandler(this.secondsToolStripMenuItem_Click);
+            // 
+            // secondsToolStripMenuItem1
+            // 
+            this.secondsToolStripMenuItem1.Name = "secondsToolStripMenuItem1";
+            this.secondsToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.secondsToolStripMenuItem1.Text = "10 Seconds";
+            this.secondsToolStripMenuItem1.Click += new System.EventHandler(this.secondsToolStripMenuItem1_Click);
+            // 
+            // secondsToolStripMenuItem2
+            // 
+            this.secondsToolStripMenuItem2.Name = "secondsToolStripMenuItem2";
+            this.secondsToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.secondsToolStripMenuItem2.Text = "20 Seconds";
+            this.secondsToolStripMenuItem2.Click += new System.EventHandler(this.secondsToolStripMenuItem2_Click);
+            // 
+            // minuteToolStripMenuItem
+            // 
+            this.minuteToolStripMenuItem.Name = "minuteToolStripMenuItem";
+            this.minuteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.minuteToolStripMenuItem.Text = "1 Minute";
+            this.minuteToolStripMenuItem.Click += new System.EventHandler(this.minuteToolStripMenuItem_Click);
+            // 
+            // noLimitToolStripMenuItem
+            // 
+            this.noLimitToolStripMenuItem.Name = "noLimitToolStripMenuItem";
+            this.noLimitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.noLimitToolStripMenuItem.Text = "No Limit";
+            this.noLimitToolStripMenuItem.Click += new System.EventHandler(this.noLimitToolStripMenuItem_Click);
+            // 
+            // boardSizeToolStripMenuItem
+            // 
+            this.boardSizeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.x5ToolStripMenuItem,
+            this.x11ToolStripMenuItem,
+            this.x13ToolStripMenuItem,
+            this.x15ToolStripMenuItem,
+            this.x17ToolStripMenuItem});
+            this.boardSizeToolStripMenuItem.Name = "boardSizeToolStripMenuItem";
+            this.boardSizeToolStripMenuItem.Size = new System.Drawing.Size(73, 20);
+            this.boardSizeToolStripMenuItem.Text = "Board Size";
+            // 
+            // x5ToolStripMenuItem
+            // 
+            this.x5ToolStripMenuItem.Name = "x5ToolStripMenuItem";
+            this.x5ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.x5ToolStripMenuItem.Text = "5x5";
+            this.x5ToolStripMenuItem.Click += new System.EventHandler(this.x5ToolStripMenuItem_Click);
+            // 
+            // x11ToolStripMenuItem
+            // 
+            this.x11ToolStripMenuItem.Name = "x11ToolStripMenuItem";
+            this.x11ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.x11ToolStripMenuItem.Text = "11x11";
+            this.x11ToolStripMenuItem.Click += new System.EventHandler(this.x11ToolStripMenuItem_Click);
+            // 
+            // x13ToolStripMenuItem
+            // 
+            this.x13ToolStripMenuItem.Name = "x13ToolStripMenuItem";
+            this.x13ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.x13ToolStripMenuItem.Text = "13x13";
+            this.x13ToolStripMenuItem.Click += new System.EventHandler(this.x13ToolStripMenuItem_Click);
+            // 
+            // x15ToolStripMenuItem
+            // 
+            this.x15ToolStripMenuItem.Name = "x15ToolStripMenuItem";
+            this.x15ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.x15ToolStripMenuItem.Text = "15x15";
+            this.x15ToolStripMenuItem.Click += new System.EventHandler(this.x15ToolStripMenuItem_Click);
+            // 
+            // x17ToolStripMenuItem
+            // 
+            this.x17ToolStripMenuItem.Name = "x17ToolStripMenuItem";
+            this.x17ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.x17ToolStripMenuItem.Text = "17x17";
+            this.x17ToolStripMenuItem.Click += new System.EventHandler(this.x17ToolStripMenuItem_Click);
+            // 
             // Connect4
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -475,7 +544,6 @@
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
@@ -499,11 +567,21 @@
         private System.Windows.Forms.PictureBox CURRENT_TURN_PICTURE_BOX;
         private System.Windows.Forms.NotifyIcon notifyIcon1;
         private System.Windows.Forms.DataGridView GameGrid;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox1;
         private System.Windows.Forms.Label RED_PIECE_COUNT;
         private System.Windows.Forms.Label BLACK_PIECES_COUNT;
         private System.Windows.Forms.Button RESET_BUTTON;
         private System.Windows.Forms.Button START_BUTTON;
-        private System.Windows.Forms.ToolStripComboBox toolStripComboBox2;
+        private System.Windows.Forms.ToolStripMenuItem timeLimitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem secondsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem secondsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem secondsToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem minuteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem noLimitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem boardSizeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem x5ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem x11ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem x13ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem x15ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem x17ToolStripMenuItem;
     }
 }

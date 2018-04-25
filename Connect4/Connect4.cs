@@ -48,9 +48,9 @@ namespace Connect4
             RED_CONSOLE_CHECKBOX.Visible = false;
             BLACK_CURRENT_STATE_LABEL.Text = "Current: Human";
             BLACK_CONSOLE_CHECKBOX.Visible = false;
-            toolStripComboBox1.SelectedIndex = 0;
             CurrentTimeLimit = TimeLimit.Five;
-            toolStripComboBox2.SelectedIndex = 0;
+            secondsToolStripMenuItem.Checked = true;
+            x5ToolStripMenuItem.Checked = true;
         }
 
         private void InitializeImages()
@@ -200,8 +200,10 @@ namespace Connect4
                 START_BUTTON.Text = "Start";
 
             }
-            toolStripComboBox1.Enabled = true;
-            toolStripComboBox2.Enabled = true;
+            //toolStripComboBox1.Enabled = true;
+            //toolStripComboBox2.Enabled = true;
+            timeLimitToolStripMenuItem.Enabled = true;
+            boardSizeToolStripMenuItem.Enabled = true;
             redCells = 0;
             blackCells = 0;
             RED_PIECE_COUNT.Text = "Pieces: " + redCells;
@@ -220,8 +222,10 @@ namespace Connect4
                 {
                     ResetBoard(false);
                 }
-                toolStripComboBox1.Enabled = false;
-                toolStripComboBox2.Enabled = false;
+                //toolStripComboBox1.Enabled = false;
+                ///toolStripComboBox2.Enabled = false;
+                timeLimitToolStripMenuItem.Enabled = false;
+                boardSizeToolStripMenuItem.Enabled = false;
                 HandlePlayerTurn();
             }
             else
@@ -229,8 +233,10 @@ namespace Connect4
                 CurrentState = GameState.Stopped;
                 CURRENT_TURN_PICTURE_BOX.Image = blank;
                 START_BUTTON.Text = "Start";
-                toolStripComboBox1.Enabled = true;
-                toolStripComboBox2.Enabled = true;
+                //toolStripComboBox1.Enabled = true;
+                //toolStripComboBox2.Enabled = true;
+                timeLimitToolStripMenuItem.Enabled = false;
+                boardSizeToolStripMenuItem.Enabled = false;
             }
         }
 
@@ -668,36 +674,6 @@ namespace Connect4
             PlayerAFilePath = "";
         }
 
-        private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(toolStripComboBox1.SelectedIndex == 0)
-            {
-                rowCount = 5;
-                columnCount = 5;
-                ResetBoard(true);
-            }else if(toolStripComboBox1.SelectedIndex == 1)
-            {
-                rowCount = 11;
-                columnCount = 11;
-                ResetBoard(true);
-            }else if(toolStripComboBox1.SelectedIndex == 2)
-            {
-                rowCount = 13;
-                columnCount = 13;
-                ResetBoard(true);
-            } else if(toolStripComboBox1.SelectedIndex == 3)
-            {
-                rowCount = 15;
-                columnCount = 15;
-                ResetBoard(true);
-            }else
-            {
-                rowCount = 17;
-                columnCount = 17;
-                ResetBoard(true);
-            }
-        }
-
         private void RED_COMPUTER_BUTTON_Click(object sender, EventArgs e)
         {
             OpenFileDialog dialog = new OpenFileDialog();
@@ -734,36 +710,119 @@ namespace Connect4
             PlayerBFilePath = "";
         }
 
-        private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int index = toolStripComboBox2.SelectedIndex;
-            switch (index)
-            {
-                case 0:
-                    CurrentTimeLimit = TimeLimit.Five;
-                    break;
-                case 1:
-                    CurrentTimeLimit = TimeLimit.Ten;
-                    break;
-                case 2:
-                    CurrentTimeLimit = TimeLimit.Twenty;
-                    break;
-                case 3:
-                    CurrentTimeLimit = TimeLimit.OneMinute;
-                    break;
-                case 4:
-                    CurrentTimeLimit = TimeLimit.No_Limit;
-                    break;
-                default:
-                    CurrentTimeLimit = TimeLimit.Five;
-                    toolStripComboBox2.SelectedIndex = 0;
-                    break;
-            }
-        }
-
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ResetBoard(true);
+        }
+
+        private void secondsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CurrentTimeLimit = TimeLimit.Five;
+            secondsToolStripMenuItem.Checked = true;
+            secondsToolStripMenuItem1.Checked = false;
+            secondsToolStripMenuItem2.Checked = false;
+            minuteToolStripMenuItem.Checked = false;
+            noLimitToolStripMenuItem.Checked = false;
+        }
+
+        private void secondsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            CurrentTimeLimit = TimeLimit.Ten;
+            secondsToolStripMenuItem.Checked = false;
+            secondsToolStripMenuItem1.Checked = true;
+            secondsToolStripMenuItem2.Checked = false;
+            minuteToolStripMenuItem.Checked = false;
+            noLimitToolStripMenuItem.Checked = false;
+        }
+
+        private void secondsToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            CurrentTimeLimit = TimeLimit.Twenty;
+            secondsToolStripMenuItem.Checked = false;
+            secondsToolStripMenuItem1.Checked = false;
+            secondsToolStripMenuItem2.Checked = true;
+            minuteToolStripMenuItem.Checked = false;
+            noLimitToolStripMenuItem.Checked = false;
+        }
+
+        private void minuteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CurrentTimeLimit = TimeLimit.OneMinute;
+            secondsToolStripMenuItem.Checked = false;
+            secondsToolStripMenuItem1.Checked = false;
+            secondsToolStripMenuItem2.Checked = false;
+            minuteToolStripMenuItem.Checked = true;
+            noLimitToolStripMenuItem.Checked = false;
+        }
+
+        private void noLimitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CurrentTimeLimit = TimeLimit.No_Limit;
+            secondsToolStripMenuItem.Checked = false;
+            secondsToolStripMenuItem1.Checked = false;
+            secondsToolStripMenuItem2.Checked = false;
+            minuteToolStripMenuItem.Checked = false;
+            noLimitToolStripMenuItem.Checked = true;
+        }
+
+        private void x5ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rowCount = 5;
+            columnCount = 5;
+            ResetBoard(true);
+            x5ToolStripMenuItem.Checked = true;
+            x11ToolStripMenuItem.Checked = false;
+            x13ToolStripMenuItem.Checked = false;
+            x15ToolStripMenuItem.Checked = false;
+            x17ToolStripMenuItem.Checked = false;
+        }
+
+        private void x11ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rowCount = 11;
+            columnCount = 11;
+            ResetBoard(true);
+            x5ToolStripMenuItem.Checked = false;
+            x11ToolStripMenuItem.Checked = true;
+            x13ToolStripMenuItem.Checked = false;
+            x15ToolStripMenuItem.Checked = false;
+            x17ToolStripMenuItem.Checked = false;
+        }
+
+        private void x13ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rowCount = 13;
+            columnCount = 13;
+            ResetBoard(true);
+            x5ToolStripMenuItem.Checked = false;
+            x11ToolStripMenuItem.Checked = false;
+            x13ToolStripMenuItem.Checked = true;
+            x15ToolStripMenuItem.Checked = false;
+            x17ToolStripMenuItem.Checked = false;
+        }
+
+        private void x15ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rowCount = 15;
+            columnCount = 15;
+            ResetBoard(true);
+            x5ToolStripMenuItem.Checked = false;
+            x11ToolStripMenuItem.Checked = false;
+            x13ToolStripMenuItem.Checked = false;
+            x15ToolStripMenuItem.Checked = true;
+            x17ToolStripMenuItem.Checked = false;
+        }
+
+        private void x17ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rowCount = 17;
+            columnCount = 17;
+            ResetBoard(true);
+            x5ToolStripMenuItem.Checked = false;
+            x11ToolStripMenuItem.Checked = false;
+            x13ToolStripMenuItem.Checked = false;
+            x15ToolStripMenuItem.Checked = false;
+            x17ToolStripMenuItem.Checked = true;
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
