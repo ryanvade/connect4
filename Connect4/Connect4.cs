@@ -329,6 +329,7 @@ namespace Connect4
                 if (lines.Length < 1)
                 {
                     DisplayInvalidMove();
+                    return;
                 }
                 string board = lines[0];
                 if(ValidMove(board))
@@ -339,6 +340,7 @@ namespace Connect4
                 {
                     DisplayInvalidMove();
                     ResetBoard(true);
+                    return;
                 }
             }
             catch (Exception e)
@@ -566,7 +568,7 @@ namespace Connect4
                     }
                 }
 
-                if(board[i] != '0' || board[i] != 'R' || board[i] != 'B')
+                if(board[i] != '0' && board[i] != 'R' && board[i] != 'B')
                 {
                     valid = false;
                 }
@@ -603,6 +605,11 @@ namespace Connect4
             try
             {
                 string board = GetBoardAsString();
+                //Computer needs to know what color it is
+                if (CurrentPlayer == PlayerColor.Red)
+                    board = "R" + board;
+                else
+                    board = "B" + board;
                 string AppPath = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
                 Console.Out.WriteLine(@AppPath + OutputFileName);
                 StreamWriter outputFile = new StreamWriter(@AppPath + OutputFileName);
