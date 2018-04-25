@@ -635,10 +635,15 @@ namespace Connect4
                 rowCount = 13;
                 columnCount = 13;
                 ResetBoard(true);
-            } else
+            } else if(toolStripComboBox1.SelectedIndex == 3)
             {
                 rowCount = 15;
                 columnCount = 15;
+                ResetBoard(true);
+            }else
+            {
+                rowCount = 17;
+                columnCount = 17;
                 ResetBoard(true);
             }
         }

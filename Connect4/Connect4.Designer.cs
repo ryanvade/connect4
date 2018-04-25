@@ -126,7 +126,8 @@
             "5x5",
             "11x11",
             "13x13",
-            "15x15"});
+            "15x15",
+            "17x17"});
             this.toolStripComboBox1.Name = "toolStripComboBox1";
             this.toolStripComboBox1.Size = new System.Drawing.Size(121, 23);
             this.toolStripComboBox1.Text = "Board Size";
@@ -156,7 +157,7 @@
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.splitContainer1.Location = new System.Drawing.Point(0, 24);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(2);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -166,7 +167,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.GameGrid);
-            this.splitContainer1.Size = new System.Drawing.Size(1126, 608);
+            this.splitContainer1.Size = new System.Drawing.Size(1126, 771);
             this.splitContainer1.SplitterDistance = 392;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 1;
@@ -180,13 +181,13 @@
             this.tableLayoutPanel1.Controls.Add(this.panel3, 0, 2);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(392, 608);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(392, 771);
             this.tableLayoutPanel1.TabIndex = 0;
             this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
@@ -201,9 +202,9 @@
             this.panel1.Controls.Add(this.label1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(2, 2);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(388, 198);
+            this.panel1.Size = new System.Drawing.Size(388, 253);
             this.panel1.TabIndex = 0;
             // 
             // RED_PIECE_COUNT
@@ -220,7 +221,7 @@
             // 
             this.RED_CONSOLE_CHECKBOX.AutoSize = true;
             this.RED_CONSOLE_CHECKBOX.Location = new System.Drawing.Point(9, 90);
-            this.RED_CONSOLE_CHECKBOX.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.RED_CONSOLE_CHECKBOX.Margin = new System.Windows.Forms.Padding(2);
             this.RED_CONSOLE_CHECKBOX.Name = "RED_CONSOLE_CHECKBOX";
             this.RED_CONSOLE_CHECKBOX.Size = new System.Drawing.Size(166, 17);
             this.RED_CONSOLE_CHECKBOX.TabIndex = 4;
@@ -241,7 +242,7 @@
             // RED_COMPUTER_BUTTON
             // 
             this.RED_COMPUTER_BUTTON.Location = new System.Drawing.Point(227, 27);
-            this.RED_COMPUTER_BUTTON.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.RED_COMPUTER_BUTTON.Margin = new System.Windows.Forms.Padding(2);
             this.RED_COMPUTER_BUTTON.Name = "RED_COMPUTER_BUTTON";
             this.RED_COMPUTER_BUTTON.Size = new System.Drawing.Size(84, 31);
             this.RED_COMPUTER_BUTTON.TabIndex = 2;
@@ -252,7 +253,7 @@
             // RED_HUMAN_BUTTON
             // 
             this.RED_HUMAN_BUTTON.Location = new System.Drawing.Point(28, 27);
-            this.RED_HUMAN_BUTTON.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.RED_HUMAN_BUTTON.Margin = new System.Windows.Forms.Padding(2);
             this.RED_HUMAN_BUTTON.Name = "RED_HUMAN_BUTTON";
             this.RED_HUMAN_BUTTON.Size = new System.Drawing.Size(71, 31);
             this.RED_HUMAN_BUTTON.TabIndex = 1;
@@ -281,10 +282,10 @@
             this.panel2.Controls.Add(this.BLACK_HUMAN_BUTTON);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(2, 204);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Location = new System.Drawing.Point(2, 259);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(388, 198);
+            this.panel2.Size = new System.Drawing.Size(388, 253);
             this.panel2.TabIndex = 1;
             // 
             // BLACK_PIECES_COUNT
@@ -301,7 +302,7 @@
             // 
             this.BLACK_CONSOLE_CHECKBOX.AutoSize = true;
             this.BLACK_CONSOLE_CHECKBOX.Location = new System.Drawing.Point(9, 112);
-            this.BLACK_CONSOLE_CHECKBOX.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BLACK_CONSOLE_CHECKBOX.Margin = new System.Windows.Forms.Padding(2);
             this.BLACK_CONSOLE_CHECKBOX.Name = "BLACK_CONSOLE_CHECKBOX";
             this.BLACK_CONSOLE_CHECKBOX.Size = new System.Drawing.Size(173, 17);
             this.BLACK_CONSOLE_CHECKBOX.TabIndex = 5;
@@ -321,7 +322,7 @@
             // BLACK_COMPUTER_BUTTON
             // 
             this.BLACK_COMPUTER_BUTTON.Location = new System.Drawing.Point(227, 37);
-            this.BLACK_COMPUTER_BUTTON.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BLACK_COMPUTER_BUTTON.Margin = new System.Windows.Forms.Padding(2);
             this.BLACK_COMPUTER_BUTTON.Name = "BLACK_COMPUTER_BUTTON";
             this.BLACK_COMPUTER_BUTTON.Size = new System.Drawing.Size(84, 31);
             this.BLACK_COMPUTER_BUTTON.TabIndex = 3;
@@ -332,7 +333,7 @@
             // BLACK_HUMAN_BUTTON
             // 
             this.BLACK_HUMAN_BUTTON.Location = new System.Drawing.Point(28, 37);
-            this.BLACK_HUMAN_BUTTON.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.BLACK_HUMAN_BUTTON.Margin = new System.Windows.Forms.Padding(2);
             this.BLACK_HUMAN_BUTTON.Name = "BLACK_HUMAN_BUTTON";
             this.BLACK_HUMAN_BUTTON.Size = new System.Drawing.Size(71, 31);
             this.BLACK_HUMAN_BUTTON.TabIndex = 2;
@@ -359,16 +360,16 @@
             this.panel3.Controls.Add(this.CURRENT_TURN_PICTURE_BOX);
             this.panel3.Controls.Add(this.label3);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(2, 406);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Location = new System.Drawing.Point(2, 516);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(388, 200);
+            this.panel3.Size = new System.Drawing.Size(388, 253);
             this.panel3.TabIndex = 2;
             // 
             // RESET_BUTTON
             // 
             this.RESET_BUTTON.Location = new System.Drawing.Point(28, 98);
-            this.RESET_BUTTON.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.RESET_BUTTON.Margin = new System.Windows.Forms.Padding(2);
             this.RESET_BUTTON.Name = "RESET_BUTTON";
             this.RESET_BUTTON.Size = new System.Drawing.Size(86, 38);
             this.RESET_BUTTON.TabIndex = 4;
@@ -379,7 +380,7 @@
             // START_BUTTON
             // 
             this.START_BUTTON.Location = new System.Drawing.Point(28, 46);
-            this.START_BUTTON.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.START_BUTTON.Margin = new System.Windows.Forms.Padding(2);
             this.START_BUTTON.Name = "START_BUTTON";
             this.START_BUTTON.Size = new System.Drawing.Size(86, 38);
             this.START_BUTTON.TabIndex = 3;
@@ -400,7 +401,7 @@
             // CURRENT_TURN_PICTURE_BOX
             // 
             this.CURRENT_TURN_PICTURE_BOX.Location = new System.Drawing.Point(261, 70);
-            this.CURRENT_TURN_PICTURE_BOX.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CURRENT_TURN_PICTURE_BOX.Margin = new System.Windows.Forms.Padding(2);
             this.CURRENT_TURN_PICTURE_BOX.Name = "CURRENT_TURN_PICTURE_BOX";
             this.CURRENT_TURN_PICTURE_BOX.Size = new System.Drawing.Size(110, 113);
             this.CURRENT_TURN_PICTURE_BOX.TabIndex = 1;
@@ -423,11 +424,11 @@
             this.GameGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.GameGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.GameGrid.Location = new System.Drawing.Point(0, 0);
-            this.GameGrid.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.GameGrid.Margin = new System.Windows.Forms.Padding(2);
             this.GameGrid.Name = "GameGrid";
             this.GameGrid.ReadOnly = true;
             this.GameGrid.RowTemplate.Height = 24;
-            this.GameGrid.Size = new System.Drawing.Size(731, 608);
+            this.GameGrid.Size = new System.Drawing.Size(731, 771);
             this.GameGrid.TabIndex = 0;
             this.GameGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GameGrid_CellClick);
             // 
@@ -441,12 +442,12 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(1126, 632);
+            this.ClientSize = new System.Drawing.Size(1126, 795);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.MaximizeBox = false;
             this.Name = "Connect4";
             this.Text = "Connect4";
