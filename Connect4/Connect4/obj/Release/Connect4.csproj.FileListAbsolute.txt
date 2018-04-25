@@ -1,0 +1,12 @@
+C:\Users\Jeremiah\Source\Repos\Connect4\Connect4\bin\Release\Connect4.exe.config
+C:\Users\Jeremiah\Source\Repos\Connect4\Connect4\bin\Release\Connect4.exe
+C:\Users\Jeremiah\Source\Repos\Connect4\Connect4\bin\Release\Connect4.pdb
+C:\Users\Jeremiah\Source\Repos\Connect4\Connect4\obj\Release\Connect4.About.resources
+C:\Users\Jeremiah\Source\Repos\Connect4\Connect4\obj\Release\Connect4.Connect4.resources
+C:\Users\Jeremiah\Source\Repos\Connect4\Connect4\obj\Release\Connect4.Properties.Resources.resources
+C:\Users\Jeremiah\Source\Repos\Connect4\Connect4\obj\Release\Connect4.Status.resources
+C:\Users\Jeremiah\Source\Repos\Connect4\Connect4\obj\Release\Connect4.csproj.GenerateResource.Cache
+C:\Users\Jeremiah\Source\Repos\Connect4\Connect4\obj\Release\Connect4.csproj.CoreCompileInputs.cache
+C:\Users\Jeremiah\Source\Repos\Connect4\Connect4\obj\Release\Connect4.exe
+C:\Users\Jeremiah\Source\Repos\Connect4\Connect4\obj\Release\Connect4.pdb
+C:\Users\Jeremiah\Source\Repos\Connect4\Connect4\obj\Release\Connect4.csprojResolveAssemblyReference.cache
