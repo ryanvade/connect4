@@ -525,7 +525,7 @@ namespace Connect4
                     }
                 }
 
-                if(board[i] != '0' || board[i] != 'R' || board[i] != 'B')
+                if(board[i] != '0' && board[i] != 'R' && board[i] != 'B')
                 {
                     valid = false;
                 }
@@ -565,6 +565,10 @@ namespace Connect4
                 string AppPath = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
                 Console.Out.WriteLine(@AppPath + OutputFileName);
                 StreamWriter outputFile = new StreamWriter(@AppPath + OutputFileName);
+                if (CurrentPlayer == PlayerColor.Black)
+                    board = "B" + board;
+                else
+                    board = "R" + board;
                 outputFile.WriteLine(board);
                 outputFile.Close();
             }
