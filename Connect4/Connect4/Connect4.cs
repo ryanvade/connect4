@@ -41,14 +41,16 @@ namespace Connect4
             InitializeComponent();
             InitializeImages();
             InitializeNewGame();
+            PlayerA = PlayerState.Human;
+            PlayerB = PlayerState.Human;
             CurrentState = GameState.Stopped;
             RED_CURRENT_STATE_LABEL.Text = "Current: Human";
             RED_CONSOLE_CHECKBOX.Visible = false;
             BLACK_CURRENT_STATE_LABEL.Text = "Current: Human";
             BLACK_CONSOLE_CHECKBOX.Visible = false;
-            toolStripComboBox1.SelectedIndex = 0;
             CurrentTimeLimit = TimeLimit.Five;
-            toolStripComboBox2.SelectedIndex = 0;
+            secondsToolStripMenuItem.Checked = true;
+            x5ToolStripMenuItem.Checked = true;
         }
 
         private void InitializeImages()
@@ -66,8 +68,6 @@ namespace Connect4
             AutoSize = true;
             CURRENT_TURN_PICTURE_BOX.Image = blank;
             CurrentPlayer = PlayerColor.Red;
-            PlayerA = PlayerState.Human;
-            PlayerB = PlayerState.Human;
             InitializeDataGridView();
         }
 
@@ -200,12 +200,10 @@ namespace Connect4
                 START_BUTTON.Text = "Start";
 
             }
-            RED_CURRENT_STATE_LABEL.Text = "Current: Human";
-            RED_CONSOLE_CHECKBOX.Visible = false;
-            BLACK_CURRENT_STATE_LABEL.Text = "Current: Human";
-            BLACK_CONSOLE_CHECKBOX.Visible = false;
-            toolStripComboBox1.Enabled = true;
-            toolStripComboBox2.Enabled = true;
+            //toolStripComboBox1.Enabled = true;
+            //toolStripComboBox2.Enabled = true;
+            timeLimitToolStripMenuItem.Enabled = true;
+            boardSizeToolStripMenuItem.Enabled = true;
             redCells = 0;
             blackCells = 0;
             RED_PIECE_COUNT.Text = "Pieces: " + redCells;
@@ -224,8 +222,10 @@ namespace Connect4
                 {
                     ResetBoard(false);
                 }
-                toolStripComboBox1.Enabled = false;
-                toolStripComboBox2.Enabled = false;
+                //toolStripComboBox1.Enabled = false;
+                ///toolStripComboBox2.Enabled = false;
+                timeLimitToolStripMenuItem.Enabled = false;
+                boardSizeToolStripMenuItem.Enabled = false;
                 HandlePlayerTurn();
             }
             else
@@ -233,13 +233,20 @@ namespace Connect4
                 CurrentState = GameState.Stopped;
                 CURRENT_TURN_PICTURE_BOX.Image = blank;
                 START_BUTTON.Text = "Start";
-                toolStripComboBox1.Enabled = true;
-                toolStripComboBox2.Enabled = true;
+                //toolStripComboBox1.Enabled = true;
+                //toolStripComboBox2.Enabled = true;
+                timeLimitToolStripMenuItem.Enabled = false;
+                boardSizeToolStripMenuItem.Enabled = false;
             }
         }
 
         private void HandlePlayerTurn()
         {
+            if(CurrentState == GameState.Stopped)
+            {
+                return;
+            }
+
             WriteBoardToFile();
             if(CurrentPlayer == PlayerColor.Red && PlayerA == PlayerState.Human)
             {
@@ -329,7 +336,6 @@ namespace Connect4
                 if (lines.Length < 1)
                 {
                     DisplayInvalidMove();
-                    return;
                 }
                 string board = lines[0];
                 if(ValidMove(board))
@@ -339,8 +345,6 @@ namespace Connect4
                 }else
                 {
                     DisplayInvalidMove();
-                    ResetBoard(true);
-                    return;
                 }
             }
             catch (Exception e)
@@ -382,170 +386,123 @@ namespace Connect4
 
         private void CheckForEnding()
         {
-            if(markedCells < rowCount)
+            if(markedCells < 5)
             {
                 return;
             }
+            GridChecker checker = new GridChecker(GameGrid, red, black, blank);
 
-            if(markedCells >= rowCount * columnCount)
-            {
-                DisplayNoWinner();
-                return;
-            }
-
-            // Check Rows
-            if(CheckRows())
+            if(checker.CheckRows())
             {
                 Console.Out.WriteLine("Winner By Rows");
+                char winner = checker.getWinner();
+                switch (winner)
+                {
+                    case 'R':
+                        DisplayWinner(PlayerColor.Red);
+                        //ResetBoard(true);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+                        return;
+                    case 'B':
+                        DisplayWinner(PlayerColor.Black);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
+                        return;
+                    default:
+                        break;
+                }
                 return;
             }
-            // Check Columns
-            if(CheckColumns())
+
+            if (checker.CheckColumns())
             {
                 Console.Out.WriteLine("Winner By Columns");
+                char winner = checker.getWinner();
+                switch (winner)
+                {
+                    case 'R':
+                        DisplayWinner(PlayerColor.Red);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
+                        return;
+                    case 'B':
+                        DisplayWinner(PlayerColor.Black);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
+                        return;
+                    default:
+                        break;
+                }
                 return;
             }
-            // Check lower diagonal
-            if(CheckLowerDiagonal())
+
+            if (checker.CheckUpperDiagonals())
             {
-                Console.Out.WriteLine("Winner By Diagonal");
-              return;
-            }
-            // Check upper diagonal
-            if(CheckUpperDiagonal())
-            {
-                Console.Out.WriteLine("Winner By Other Diagonal");
+                Console.Out.WriteLine("Winner By Upper Diagonals");
+                char winner = checker.getWinner();
+                switch (winner)
+                {
+                    case 'R':
+                        DisplayWinner(PlayerColor.Red);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
+                        return;
+                    case 'B':
+                        DisplayWinner(PlayerColor.Black);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
+                        return;
+                    default:
+                        break;
+                }
                 return;
             }
-        }
 
-        private bool CheckRows()
-        {
-            bool winner = false;
-            foreach(DataGridViewRow row in GameGrid.Rows)
+            if (checker.CheckLowerDiagonals())
             {
-                if (row.IsNewRow) break;
-                if (winner) break;
-                bool different = false;
-                Bitmap first = (Bitmap)row.Cells[0].Value;
-                if(first != blank)
+                Console.Out.WriteLine("Winner By Lower Diagonals");
+                char winner = checker.getWinner();
+                switch (winner)
                 {
-                    for (int i = 1; i < columnCount; i++)
-                    {
-                        if ((Bitmap)row.Cells[i].Value != first)
-                        {
-                            different = true;
-                            break;
-                        }
-                    }
-                    if (!different)
-                    {
-                        winner = true;
-                        if (first == red)
-                        {
-                            DisplayWinner(PlayerColor.Red);
-                        }
-                        else
-                        {
-                            DisplayWinner(PlayerColor.Black);
-                        }
-                    }
+                    case 'R':
+                        DisplayWinner(PlayerColor.Red);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
+                        return;
+                    case 'B':
+                        DisplayWinner(PlayerColor.Black);
+                        START_BUTTON.Text = "Start";
+                        CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+                        //ResetBoard(true);
+                        return;
+                    default:
+                        break;
                 }
-            }
-            return winner;
-        }
-
-        private bool CheckColumns()
-        {
-            bool winner = false;
-            Bitmap cell;
-            foreach (DataGridViewColumn column in GameGrid.Columns)
-            {
-                if (winner) break;
-                bool different = false;
-                cell = (Bitmap)GameGrid.Rows[0].Cells[column.Index].Value;
-                if(cell != blank)
-                {
-                    for (int j = 1; j < rowCount; j++)
-                    {
-                        if (cell != GameGrid.Rows[j].Cells[column.Index].Value)
-                        {
-                            different = true;
-                            break;
-                        }
-                    }
-                    if (!different)
-                    {
-                        winner = true;
-                        if (cell == red)
-                        {
-                            DisplayWinner(PlayerColor.Red);
-                        }
-                        else
-                        {
-                            DisplayWinner(PlayerColor.Black);
-                        }
-                        return true;
-                    }
-                }
-            }
-            return winner;
-
-        }
-
-        private bool CheckLowerDiagonal()
-        {
-            Bitmap first = (Bitmap)GameGrid.Rows[0].Cells[0].Value;
-            if(first == blank)
-            {
-                return false;
+                return;
             }
 
-            int j = 1;
-            for (int i = 1; i < rowCount; i++)
+            if(markedCells == rowCount * columnCount)
             {
-                if(GameGrid.Rows[i].Cells[j].Value != first)
-                {
-                    return false;
-                }
-                j++;
-            }
-            if(first == red)
-            {
-                DisplayWinner(PlayerColor.Red);
-            }else
-            {
-                DisplayWinner(PlayerColor.Black);
-            }
-            return true;
-        }
+                DisplayNoWinner();
+                START_BUTTON.Text = "Start";
+                CURRENT_TURN_PICTURE_BOX.Image = blank;
 
-        private bool CheckUpperDiagonal()
-        {
-            Bitmap first = (Bitmap)GameGrid.Rows[rowCount - 1].Cells[0].Value;
-            if(first == blank)
-            {
-                return false;
+                //ResetBoard(true);
             }
-
-            int j = 1;
-            for (int i = rowCount - 2; i >= 0; i--)
-            {
-                    if(GameGrid.Rows[i].Cells[j].Value != first)
-                    {
-                        return false;
-                    }
-                j++;
-            }
-            if (first == red)
-            {
-                DisplayWinner(PlayerColor.Red);
-            }
-            else
-            {
-                DisplayWinner(PlayerColor.Black);
-            }
-            return true;
 
         }
 
@@ -605,14 +562,13 @@ namespace Connect4
             try
             {
                 string board = GetBoardAsString();
-                //Computer needs to know what color it is
-                if (CurrentPlayer == PlayerColor.Red)
-                    board = "R" + board;
-                else
-                    board = "B" + board;
                 string AppPath = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
                 Console.Out.WriteLine(@AppPath + OutputFileName);
                 StreamWriter outputFile = new StreamWriter(@AppPath + OutputFileName);
+                if (CurrentPlayer == PlayerColor.Black)
+                    board = "B" + board;
+                else
+                    board = "R" + board;
                 outputFile.WriteLine(board);
                 outputFile.Close();
             }
@@ -629,7 +585,11 @@ namespace Connect4
             status.StartPosition = FormStartPosition.CenterParent;
             status.ShowDialog();
             status.Dispose();
-            ResetBoard(true);
+            CurrentState = GameState.Stopped;
+            START_BUTTON.Text = "Start";
+            CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+            //ResetBoard(true);
         }
 
         private void DisplayNoWinner()
@@ -638,7 +598,11 @@ namespace Connect4
             status.StartPosition = FormStartPosition.CenterParent;
             status.ShowDialog();
             status.Dispose();
-            ResetBoard(true);
+            CurrentState = GameState.Stopped;
+            START_BUTTON.Text = "Start";
+            CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+            //ResetBoard(true);
         }
 
         private void DisplayInvalidMove()
@@ -647,7 +611,11 @@ namespace Connect4
             status.StartPosition = FormStartPosition.CenterParent;
             status.ShowDialog();
             status.Dispose();
-            ResetBoard(true);
+            CurrentState = GameState.Stopped;
+            START_BUTTON.Text = "Start";
+            CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+            //ResetBoard(true);
         }
 
         private void DisplayOutOfTimeMessage()
@@ -656,7 +624,11 @@ namespace Connect4
             status.StartPosition = FormStartPosition.CenterParent;
             status.ShowDialog();
             status.Dispose();
-            ResetBoard(true);
+            CurrentState = GameState.Stopped;
+            START_BUTTON.Text = "Start";
+            CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+            //ResetBoard(true);
         }
 
         private void DisplayBadExecutable()
@@ -665,7 +637,11 @@ namespace Connect4
             status.StartPosition = FormStartPosition.CenterParent;
             status.ShowDialog();
             status.Dispose();
-            ResetBoard(true);
+            CurrentState = GameState.Stopped;
+            START_BUTTON.Text = "Start";
+            CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+            //ResetBoard(true);
         }
 
         private void DisplayWinner(PlayerColor player)
@@ -682,7 +658,11 @@ namespace Connect4
             status.StartPosition = FormStartPosition.CenterParent;
             status.ShowDialog();
             status.Dispose();
-            ResetBoard(true);
+            CurrentState = GameState.Stopped;
+            START_BUTTON.Text = "Start";
+            CURRENT_TURN_PICTURE_BOX.Image = blank;
+
+            //ResetBoard(true);
         }
 
         private void RESET_BUTTON_Click(object sender, EventArgs e)
@@ -696,26 +676,6 @@ namespace Connect4
             RED_CONSOLE_CHECKBOX.Visible = false;
             RED_CURRENT_STATE_LABEL.Text = "Current: Human";
             PlayerAFilePath = "";
-        }
-
-        private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(toolStripComboBox1.SelectedIndex == 0)
-            {
-                rowCount = 5;
-                columnCount = 5;
-                ResetBoard(true);
-            }else if(toolStripComboBox1.SelectedIndex == 1)
-            {
-                rowCount = 11;
-                columnCount = 11;
-                ResetBoard(true);
-            }else
-            {
-                rowCount = 13;
-                columnCount = 13;
-                ResetBoard(true);
-            }
         }
 
         private void RED_COMPUTER_BUTTON_Click(object sender, EventArgs e)
@@ -754,36 +714,119 @@ namespace Connect4
             PlayerBFilePath = "";
         }
 
-        private void toolStripComboBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int index = toolStripComboBox2.SelectedIndex;
-            switch (index)
-            {
-                case 0:
-                    CurrentTimeLimit = TimeLimit.Five;
-                    break;
-                case 1:
-                    CurrentTimeLimit = TimeLimit.Ten;
-                    break;
-                case 2:
-                    CurrentTimeLimit = TimeLimit.Twenty;
-                    break;
-                case 3:
-                    CurrentTimeLimit = TimeLimit.OneMinute;
-                    break;
-                case 4:
-                    CurrentTimeLimit = TimeLimit.No_Limit;
-                    break;
-                default:
-                    CurrentTimeLimit = TimeLimit.Five;
-                    toolStripComboBox2.SelectedIndex = 0;
-                    break;
-            }
-        }
-
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ResetBoard(true);
+        }
+
+        private void secondsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CurrentTimeLimit = TimeLimit.Five;
+            secondsToolStripMenuItem.Checked = true;
+            secondsToolStripMenuItem1.Checked = false;
+            secondsToolStripMenuItem2.Checked = false;
+            minuteToolStripMenuItem.Checked = false;
+            noLimitToolStripMenuItem.Checked = false;
+        }
+
+        private void secondsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            CurrentTimeLimit = TimeLimit.Ten;
+            secondsToolStripMenuItem.Checked = false;
+            secondsToolStripMenuItem1.Checked = true;
+            secondsToolStripMenuItem2.Checked = false;
+            minuteToolStripMenuItem.Checked = false;
+            noLimitToolStripMenuItem.Checked = false;
+        }
+
+        private void secondsToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            CurrentTimeLimit = TimeLimit.Twenty;
+            secondsToolStripMenuItem.Checked = false;
+            secondsToolStripMenuItem1.Checked = false;
+            secondsToolStripMenuItem2.Checked = true;
+            minuteToolStripMenuItem.Checked = false;
+            noLimitToolStripMenuItem.Checked = false;
+        }
+
+        private void minuteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CurrentTimeLimit = TimeLimit.OneMinute;
+            secondsToolStripMenuItem.Checked = false;
+            secondsToolStripMenuItem1.Checked = false;
+            secondsToolStripMenuItem2.Checked = false;
+            minuteToolStripMenuItem.Checked = true;
+            noLimitToolStripMenuItem.Checked = false;
+        }
+
+        private void noLimitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CurrentTimeLimit = TimeLimit.No_Limit;
+            secondsToolStripMenuItem.Checked = false;
+            secondsToolStripMenuItem1.Checked = false;
+            secondsToolStripMenuItem2.Checked = false;
+            minuteToolStripMenuItem.Checked = false;
+            noLimitToolStripMenuItem.Checked = true;
+        }
+
+        private void x5ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rowCount = 5;
+            columnCount = 5;
+            ResetBoard(true);
+            x5ToolStripMenuItem.Checked = true;
+            x11ToolStripMenuItem.Checked = false;
+            x13ToolStripMenuItem.Checked = false;
+            x15ToolStripMenuItem.Checked = false;
+            x17ToolStripMenuItem.Checked = false;
+        }
+
+        private void x11ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rowCount = 11;
+            columnCount = 11;
+            ResetBoard(true);
+            x5ToolStripMenuItem.Checked = false;
+            x11ToolStripMenuItem.Checked = true;
+            x13ToolStripMenuItem.Checked = false;
+            x15ToolStripMenuItem.Checked = false;
+            x17ToolStripMenuItem.Checked = false;
+        }
+
+        private void x13ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rowCount = 13;
+            columnCount = 13;
+            ResetBoard(true);
+            x5ToolStripMenuItem.Checked = false;
+            x11ToolStripMenuItem.Checked = false;
+            x13ToolStripMenuItem.Checked = true;
+            x15ToolStripMenuItem.Checked = false;
+            x17ToolStripMenuItem.Checked = false;
+        }
+
+        private void x15ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rowCount = 15;
+            columnCount = 15;
+            ResetBoard(true);
+            x5ToolStripMenuItem.Checked = false;
+            x11ToolStripMenuItem.Checked = false;
+            x13ToolStripMenuItem.Checked = false;
+            x15ToolStripMenuItem.Checked = true;
+            x17ToolStripMenuItem.Checked = false;
+        }
+
+        private void x17ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rowCount = 17;
+            columnCount = 17;
+            ResetBoard(true);
+            x5ToolStripMenuItem.Checked = false;
+            x11ToolStripMenuItem.Checked = false;
+            x13ToolStripMenuItem.Checked = false;
+            x15ToolStripMenuItem.Checked = false;
+            x17ToolStripMenuItem.Checked = true;
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
