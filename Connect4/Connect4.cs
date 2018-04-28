@@ -145,7 +145,7 @@ namespace Connect4
                 CURRENT_TURN_PICTURE_BOX.Image = red;
             }
             Application.DoEvents();
-            Thread.Sleep(500);
+            Thread.Sleep(250);
         }
 
         private void GameGrid_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -273,12 +273,25 @@ namespace Connect4
                     if (CurrentPlayer == PlayerColor.Red)
                     {
                         process.StartInfo.FileName = PlayerAFilePath;
-                        process.StartInfo.UseShellExecute = RED_CONSOLE_CHECKBOX.Checked;
+                        if(!RED_CONSOLE_CHECKBOX.Checked)
+                        {
+                            process.StartInfo.RedirectStandardOutput = true;
+                            process.StartInfo.RedirectStandardError = true;
+                            process.StartInfo.UseShellExecute = false;
+                            process.StartInfo.CreateNoWindow = true;
+                        }
+
                     }
                     else
                     {
                         process.StartInfo.FileName = PlayerBFilePath;
-                        process.StartInfo.UseShellExecute = BLACK_CONSOLE_CHECKBOX.Checked;
+                        if(!BLACK_CONSOLE_CHECKBOX.Checked)
+                        {
+                            process.StartInfo.RedirectStandardOutput = true;
+                            process.StartInfo.RedirectStandardError = true;
+                            process.StartInfo.UseShellExecute = false;
+                            process.StartInfo.CreateNoWindow = true;
+                        }
                     }
                     process.Start();
                     while (!process.HasExited && end > now )
@@ -309,12 +322,24 @@ namespace Connect4
                     if (CurrentPlayer == PlayerColor.Red)
                     {
                         process.StartInfo.FileName = PlayerAFilePath;
-                        process.StartInfo.UseShellExecute = RED_CONSOLE_CHECKBOX.Checked;
+                        if(!RED_CONSOLE_CHECKBOX.Checked)
+                        {
+                            process.StartInfo.RedirectStandardOutput = true;
+                            process.StartInfo.RedirectStandardError = true;
+                            process.StartInfo.UseShellExecute = false;
+                            process.StartInfo.CreateNoWindow = true;
+                        }
                     }
                     else
                     {
                         process.StartInfo.FileName = PlayerBFilePath;
-                        process.StartInfo.UseShellExecute = BLACK_CONSOLE_CHECKBOX.Checked;
+                        if(!BLACK_CONSOLE_CHECKBOX.Checked)
+                        {
+                            process.StartInfo.RedirectStandardOutput = true;
+                            process.StartInfo.RedirectStandardError = true;
+                            process.StartInfo.UseShellExecute = false;
+                            process.StartInfo.CreateNoWindow = true;
+                        }
                     }
                     process.Start();
                     while (!process.HasExited)

@@ -139,7 +139,7 @@ namespace Connect4
                         int currentColumn = i - 1;
                         int currentRow = j + 1;
                         int concurrent = 1;
-                        while (currentRow < rowCount && currentColumn < columnCount && currentRow >= 0 && currentColumn >= 0)
+                        while (currentRow < rowCount && currentColumn < columnCount && currentRow >= 0 && currentColumn >= 0 && grid[currentRow][currentColumn] != '0')
                         {
                             if (grid[currentRow][currentColumn] == current)
                             {
@@ -147,7 +147,7 @@ namespace Connect4
                             }
                             else
                             {
-                                break;
+                                concurrent = 0;
                             }
                             currentRow++;
                             currentColumn--;
@@ -177,15 +177,17 @@ namespace Connect4
                         int currentColumn = j - 1;
                         int currentRow = i - 1;
                         int concurrent = 1;
-                        while (currentRow < rowCount && currentColumn < columnCount && currentRow >= 0 && currentColumn >= 0)
+                        while (currentRow < rowCount && currentColumn < columnCount && currentRow >= 0 && currentColumn >= 0 && grid[currentRow][currentColumn] != '0')
                         {
                             if (grid[currentRow][currentColumn] == current)
                             {
+                                Console.Out.WriteLine("Incrementing Count");
                                 concurrent++;
                             }
                             else
                             {
-                                break;
+                                concurrent = 0;
+                                Console.Out.WriteLine("Reseting Count");
                             }
                             currentRow--;
                             currentColumn--;
