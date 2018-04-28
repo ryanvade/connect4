@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -133,7 +134,8 @@ namespace Connect4
 
         private void SwitchPlayers()
         {
-            if(CurrentPlayer == PlayerColor.Red)
+
+            if (CurrentPlayer == PlayerColor.Red)
             {
                 CurrentPlayer = PlayerColor.Black;
                 CURRENT_TURN_PICTURE_BOX.Image = black;
@@ -142,6 +144,8 @@ namespace Connect4
                 CurrentPlayer = PlayerColor.Red;
                 CURRENT_TURN_PICTURE_BOX.Image = red;
             }
+            Application.DoEvents();
+            Thread.Sleep(500);
         }
 
         private void GameGrid_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -242,7 +246,8 @@ namespace Connect4
 
         private void HandlePlayerTurn()
         {
-            if(CurrentState == GameState.Stopped)
+            CheckForEnding();
+            if(CurrentState == GameState.Stopped || markedCells == rowCount * columnCount)
             {
                 return;
             }
@@ -323,6 +328,7 @@ namespace Connect4
                 }
                 GetComputerMove();
             }
+            Console.Out.WriteLine("Switching Players");
             SwitchPlayers();
             HandlePlayerTurn();
         }
@@ -382,11 +388,12 @@ namespace Connect4
             }
             RED_PIECE_COUNT.Text = "Pieces: " + redCells;
             BLACK_PIECES_COUNT.Text = "Pieces: " + blackCells;
+            markedCells = redCells + blackCells;
         }
 
         private void CheckForEnding()
         {
-            if(markedCells < 5)
+            if(markedCells < 5 || CurrentState == GameState.Stopped)
             {
                 return;
             }
@@ -414,6 +421,8 @@ namespace Connect4
                     default:
                         break;
                 }
+                CurrentState = GameState.Stopped;
+
                 return;
             }
 
@@ -440,6 +449,8 @@ namespace Connect4
                     default:
                         break;
                 }
+                CurrentState = GameState.Stopped;
+
                 return;
             }
 
@@ -466,6 +477,8 @@ namespace Connect4
                     default:
                         break;
                 }
+                CurrentState = GameState.Stopped;
+
                 return;
             }
 
@@ -492,6 +505,8 @@ namespace Connect4
                     default:
                         break;
                 }
+                CurrentState = GameState.Stopped;
+
                 return;
             }
 
@@ -500,7 +515,7 @@ namespace Connect4
                 DisplayNoWinner();
                 START_BUTTON.Text = "Start";
                 CURRENT_TURN_PICTURE_BOX.Image = blank;
-
+                CurrentState = GameState.Stopped;
                 //ResetBoard(true);
             }
 
